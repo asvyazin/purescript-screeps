@@ -4,6 +4,8 @@
 
 exports.unsafeField = function (key) {
   return function (obj) {
+    console.log(obj);
+    console.log(key);
     return obj[key];
   }
 }
