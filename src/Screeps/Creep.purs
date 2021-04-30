@@ -3,11 +3,12 @@ module Screeps.Creep where
 
 import Data.Argonaut.Decode (class DecodeJson, decodeJson)
 import Data.Argonaut.Encode (class EncodeJson, encodeJson)
+import Data.Bifunctor (lmap)
 import Data.Either (Either)
 import Data.Map (Map)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
-import Prelude (class Eq, class Show, Unit, show, ($), (<$>), (<>))
+import Prelude (class Eq, class Show, Unit, show, ($), (<$>), (<>), (>>>))
 import Screeps.BodyPartType (BodyPartType)
 import Screeps.ConstructionSite (ConstructionSite)
 import Screeps.Controller (Controller)
@@ -164,7 +165,7 @@ heal :: Creep -> Creep -> Effect ReturnCode
 heal = runThisEffectFn1 "heal"
 
 getMemory :: forall a. (DecodeJson a) => Creep -> String -> Effect (Either String a)
-getMemory creep key = decodeJson <$> unsafeGetFieldEffect key creepMemory
+getMemory creep key = (decodeJson >>> lmap show) <$> unsafeGetFieldEffect key creepMemory
   where
   creepMemory = unsafeField "memory" creep
 

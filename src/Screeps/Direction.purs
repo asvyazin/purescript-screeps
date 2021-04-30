@@ -4,8 +4,8 @@ module Screeps.Direction where
 import Prelude hiding (bottom, top)
 import Data.Argonaut.Decode (class DecodeJson, decodeJson)
 import Data.Argonaut.Encode (class EncodeJson, encodeJson)
+import Data.Eq.Generic (genericEq)
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Eq (genericEq)
 
 newtype Direction
   = Direction Int

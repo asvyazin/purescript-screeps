@@ -2,16 +2,18 @@
 module Screeps.Game where
 
 import Screeps.Structure
+
 import Data.Map as Map
 import Effect (Effect)
+import Foreign (unsafeFromForeign)
+import Foreign.Object (Object)
 import Prelude (Unit, (<$>))
 import Screeps.ConstructionSite (ConstructionSite)
-import Screeps.FFI (unsafeObjectToStrMap)
+import Screeps.Creep (Creep)
 import Screeps.Flag (Flag)
 import Screeps.Market (Market)
 import Screeps.RoomObject (Room)
 import Screeps.Spawn (Spawn)
-import Screeps.Creep (Creep)
 import Screeps.Types (WorldMap)
 
 foreign import unsafeGameField :: forall a. String -> Effect a
@@ -34,11 +36,11 @@ constructionSites = unsafeGameField "constructionSites"
 cpu :: Effect Cpu
 cpu = unsafeGameField "cpu"
 
-creeps :: Effect (Map.Map String Creep)
-creeps = unsafeObjectToStrMap <$> unsafeGameField "creeps"
+creeps :: Effect (Object Creep)
+creeps = unsafeFromForeign <$> unsafeGameField "creeps"
 
-flags :: Effect (Map.Map String Flag)
-flags = unsafeObjectToStrMap <$> unsafeGameField "flags"
+flags :: Effect (Object Flag)
+flags = unsafeFromForeign <$> unsafeGameField "flags"
 
 foreign import gcl :: Gcl
 
@@ -47,14 +49,14 @@ foreign import map :: WorldMap
 market :: Effect Market
 market = unsafeGameField "market"
 
-rooms :: Effect (Map.Map String Room)
-rooms = unsafeObjectToStrMap <$> unsafeGameField "rooms"
+rooms :: Effect (Object Room)
+rooms = unsafeFromForeign <$> unsafeGameField "rooms"
 
-spawns :: Effect (Map.Map String Spawn)
-spawns = unsafeObjectToStrMap <$> unsafeGameField "spawns"
+spawns :: Effect (Object Spawn)
+spawns = unsafeFromForeign <$> unsafeGameField "spawns"
 
-structures :: Effect (Map.Map String AnyStructure)
-structures = unsafeObjectToStrMap <$> unsafeGameField "structures"
+structures :: Effect (Object AnyStructure)
+structures = unsafeFromForeign <$> unsafeGameField "structures"
 
 time :: Effect Int
 time = unsafeGameField "time"

@@ -10,6 +10,7 @@ import Effect
 
 import Data.Argonaut.Core (Json, stringify)
 import Data.Argonaut.Decode.Class (class DecodeJson)
+import Data.Argonaut.Decode.Error (JsonDecodeError(..))
 import Data.Argonaut.Encode.Class (class EncodeJson)
 import Data.Either (Either(..))
 import Data.Function (($))
@@ -175,7 +176,7 @@ instance encodeCostMatrix :: EncodeJson CostMatrix where
 instance decodeCostMatrix :: DecodeJson CostMatrix where
   decodeJson json = do
     case unsafePerformEffect $ try $ deserialize $ SerializedCostMatrix json of
-      Left err -> Left $ show err
+      Left err -> Left $ TypeMismatch $ show err
       Right r -> Right r
 
 -- TODO: costCallback option

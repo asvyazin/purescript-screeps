@@ -2,19 +2,10 @@
 module Screeps.FFI where
 
 import Prelude
-import Effect (Effect)
-import Control.Monad.Except (runExcept)
-import Data.Array (catMaybes)
-import Data.Either (fromRight)
+
 import Data.Function.Uncurried (Fn3, runFn3)
-import Data.Int (fromString)
-import Data.Map (Map, fromFoldable, toUnfoldableUnordered)
 import Data.Maybe (Maybe(Just, Nothing), isJust, fromJust, maybe)
-import Data.Traversable (traverse)
-import Data.Tuple (Tuple(..))
-import Foreign (Foreign, unsafeFromForeign)
-import Foreign.Index ((!))
-import Foreign.Keys (keys)
+import Effect (Effect)
 import Partial.Unsafe (unsafePartial)
 
 unsafeOptField :: forall obj val. String -> obj -> Maybe val
@@ -91,17 +82,3 @@ selectMaybes :: forall a. a -> JsObject
 selectMaybes obj = unsafePartial $ selectMaybesImpl isJust fromJust obj
 
 foreign import instanceOf :: forall a. String -> a -> Boolean
-
-unsafeObjectToStrMap :: forall a. Foreign -> Map String a
-unsafeObjectToStrMap object =
-  unsafePartial $ fromRight
-    $ runExcept do
-        ks <- keys object
-        kvs <- flip traverse ks \key -> Tuple <$> pure key <*> (unsafeFromForeign <$> object ! key)
-        pure $ fromFoldable kvs
-
-unsafeObjectToIntMap :: forall a. Foreign -> Map Int a
-unsafeObjectToIntMap =
-  fromFoldable <<< catMaybes <<< map (\(Tuple k v) -> Tuple <$> fromString k <*> pure v)
-    <<< toUnfoldableUnordered
-    <<< unsafeObjectToStrMap

@@ -1,8 +1,8 @@
 module Screeps.ReturnCode where
 
 import Data.Eq (class Eq, (==))
+import Data.Eq.Generic (genericEq)
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Eq (genericEq)
 import Data.Show (class Show, show)
 
 newtype ReturnCode

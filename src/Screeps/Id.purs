@@ -11,10 +11,12 @@ module Screeps.Id
   ) where
 
 import Prelude
-import Data.Either (Either(..))
+
 import Data.Argonaut.Core (Json)
 import Data.Argonaut.Decode.Class (class DecodeJson, decodeJson)
+import Data.Argonaut.Decode.Error (JsonDecodeError(..))
 import Data.Argonaut.Encode.Class (class EncodeJson, encodeJson)
+import Data.Either (Either(..))
 import Data.Function (on)
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
@@ -32,12 +34,12 @@ id :: forall a. HasId a => a -> Id a
 id = unsafeField "id"
 
 -- | Get the object from an Id, if it passes validation.
-getObjectById :: forall a. HasId a => Id a -> Either String a
+getObjectById :: forall a. HasId a => Id a -> Either JsonDecodeError a
 getObjectById i = case unsafeGetObjectById i of
-  Nothing -> Left ("Object with id " <> show i <> " no longer exists")
+  Nothing -> Left $ TypeMismatch ("Object with id " <> show i <> " no longer exists")
   Just o
     | validate o -> Right o
-  Just _ -> Left ("Object with given id failed type validation")
+  Just _ -> Left $ TypeMismatch ("Object with given id failed type validation")
 
 unsafeGetObjectById :: forall a. Id a -> Maybe a
 unsafeGetObjectById = unsafeGetObjectById_helper Nothing Just
@@ -74,5 +76,5 @@ eqById = (==) `on` id
 encodeJsonWithId :: forall a. HasId a => a -> Json
 encodeJsonWithId a = encodeJson (id a)
 
-decodeJsonWithId :: forall a. HasId a => Json -> Either String a
+decodeJsonWithId :: forall a. HasId a => Json -> Either JsonDecodeError a
 decodeJsonWithId = decodeJson >=> getObjectById

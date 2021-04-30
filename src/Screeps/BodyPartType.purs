@@ -3,7 +3,7 @@ module Screeps.BodyPartType where
 import Prelude
 import Data.Foldable (sum)
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Eq (genericEq)
+import Data.Eq.Generic (genericEq)
 
 newtype BodyPartType
   = BodyPartType String

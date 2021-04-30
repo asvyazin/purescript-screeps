@@ -1,13 +1,15 @@
 module Screeps.Stores where
 
 import Prelude
+
 import Data.Argonaut.Decode.Class (class DecodeJson)
 import Data.Argonaut.Encode.Class (class EncodeJson)
 import Data.Array (fromFoldable)
-import Data.Map as Map
 import Data.Maybe (Maybe(..))
+import Foreign (unsafeFromForeign)
+import Foreign.Object (Object, keys, lookup)
 import Screeps.Destructible (class Destructible)
-import Screeps.FFI (instanceOf, runThisFn0, runThisFn1, toMaybe, unsafeField, unsafeObjectToStrMap)
+import Screeps.FFI (instanceOf, runThisFn0, runThisFn1, toMaybe, unsafeField)
 import Screeps.Id (class HasId, eqById, validate, encodeJsonWithId, decodeJsonWithId)
 import Screeps.Resource (ResourceType(ResourceType))
 import Screeps.RoomObject (class RoomObject)
@@ -71,18 +73,18 @@ asAnyStore ::
 asAnyStore = unsafeCoerce
 
 newtype Store
-  = Store (Map.Map String Int)
+  = Store (Object Int)
 
 derive newtype instance showCarry :: Show Store
 
 store :: forall a. Stores a => a -> Store
-store s = Store $ unsafeObjectToStrMap $ unsafeField "store" s
+store s = Store $ unsafeFromForeign $ unsafeField "store" s
 
 heldResources :: Store -> Array ResourceType
-heldResources (Store c) = map ResourceType $ fromFoldable $ Map.keys c
+heldResources (Store c) = map ResourceType $ fromFoldable $ keys c
 
 amountHeld :: Store -> ResourceType -> Maybe Int
-amountHeld (Store c) (ResourceType r) = Map.lookup r c
+amountHeld (Store c) (ResourceType r) = lookup r c
 
 storeCapacity :: forall a. Stores a => a -> ResourceType -> Maybe Int
 storeCapacity s (ResourceType res) = toMaybe $ runThisFn1 "getCapacity" (unsafeField "store" s) res

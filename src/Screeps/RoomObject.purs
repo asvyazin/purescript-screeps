@@ -4,6 +4,7 @@ module Screeps.RoomObject where
 import Prelude
 
 import Data.Argonaut.Decode.Class (class DecodeJson, decodeJson)
+import Data.Argonaut.Decode.Error (JsonDecodeError(..))
 import Data.Argonaut.Encode.Class (class EncodeJson, encodeJson)
 import Data.Either (Either(..))
 import Data.Function (on)
@@ -41,10 +42,10 @@ instance decodeJson :: DecodeJson Room where
     roomNam <- decodeJson json
     case unsafePerformEffect $ try $ map toMaybe $ lookupRoom roomNam of
       Left err ->
-        Left $ "Cannot access the room: " <> show roomNam
+        Left $ TypeMismatch $ "Cannot access the room: " <> show roomNam
           <> " because of: "
           <> show err
-      Right (Nothing) -> Left $ "Cannot access room: " <> show roomNam
+      Right (Nothing) -> Left $ TypeMismatch $ "Cannot access room: " <> show roomNam
       Right (Just r) -> Right r
 
 foreign import data AnyRoomObject :: Type

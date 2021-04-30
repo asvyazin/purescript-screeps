@@ -10,7 +10,8 @@ import Data.Argonaut.Decode.Class (class DecodeJson)
 import Data.Argonaut.Encode.Class (class EncodeJson)
 import Data.Map (lookup)
 import Data.Maybe (Maybe, fromMaybe)
-import Screeps.Constants (extension_energy_capacity)
+-- fixme
+-- import Screeps.Constants (extension_energy_capacity)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (instanceOf)
 import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId, eqById)
@@ -50,12 +51,13 @@ instance destructibleExtension :: Destructible Extension
 toExtension :: AnyStructure -> Maybe Extension
 toExtension = fromAnyStructure
 
+-- fixme
 -- | Extension capacity on a given room control level.
-extensionCapacity :: Int -> Int
-extensionCapacity level
-  | level > 8 = extensionCapacity 8
+-- extensionCapacity :: Int -> Int
+-- extensionCapacity level
+--   | level > 8 = extensionCapacity 8
 
-extensionCapacity level =
-  0
-    `fromMaybe`
-      lookup level extension_energy_capacity
+-- extensionCapacity level =
+--   0
+--     `fromMaybe`
+--       lookup level extension_energy_capacity
