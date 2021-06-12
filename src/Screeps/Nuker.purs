@@ -2,22 +2,23 @@
 module Screeps.Nuker where
 
 import Screeps.Structure
-import Data.Argonaut.Encode.Class (class EncodeJson)
+
 import Data.Argonaut.Decode.Class (class DecodeJson)
-import Effect (Effect)
+import Data.Argonaut.Encode.Class (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
+import Effect (Effect)
 import Screeps.Constants (nuker_cooldown)
 import Screeps.Coolsdown (class Coolsdown)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (runThisEffectFn1, unsafeField, instanceOf)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
-import Screeps.Types (class Owned)
+import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
 import Screeps.RoomPosition.Type (RoomPosition)
-import Screeps.Refillable (class Refillable)
-import Screeps.ReturnCode (ReturnCode)
+import Screeps.Stores (class Stores)
+import Screeps.Types (class Owned)
 
 foreign import data Nuker :: Type
 
@@ -36,7 +37,7 @@ instance decodeNuker :: DecodeJson Nuker where
 
 instance structuralNuker :: Structural Nuker
 
-instance refillableNuker :: Refillable Nuker
+instance storesNuker :: Stores Nuker
 
 instance coolsdownNuker :: Coolsdown Nuker where
   expectedCooldown _ = nuker_cooldown
@@ -51,12 +52,6 @@ instance showNuker :: Show Nuker where
   show = showStructure
 
 instance destructibleNuker :: Destructible Nuker
-
-ghodium :: Nuker -> Int
-ghodium = unsafeField "ghodium"
-
-ghodiumCapacity :: Nuker -> Int
-ghodiumCapacity = unsafeField "ghodiumCapacity"
 
 launchNuke :: Nuker -> RoomPosition -> Effect ReturnCode
 launchNuke = runThisEffectFn1 "launchNuke"

@@ -2,21 +2,18 @@
 module Screeps.Extension where
 
 import Screeps.Structure
-import Data.Eq (class Eq)
-import Data.Ord ((>))
-import Data.Show (class Show)
-import Screeps.Types (class Owned)
+
 import Data.Argonaut.Decode.Class (class DecodeJson)
 import Data.Argonaut.Encode.Class (class EncodeJson)
-import Data.Map (lookup)
-import Data.Maybe (Maybe, fromMaybe)
--- fixme
--- import Screeps.Constants (extension_energy_capacity)
+import Data.Eq (class Eq)
+import Data.Maybe (Maybe)
+import Data.Show (class Show)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (instanceOf)
 import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId, eqById)
-import Screeps.Refillable (class Refillable)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Stores (class Stores)
+import Screeps.Types (class Owned)
 
 foreign import data Extension :: Type
 
@@ -35,7 +32,7 @@ instance decodeExtension :: DecodeJson Extension where
 
 instance structuralExtension :: Structural Extension
 
-instance refillableExtension :: Refillable Extension
+instance storesExtension :: Stores Extension
 
 instance eqExtension :: Eq Extension where
   eq = eqById

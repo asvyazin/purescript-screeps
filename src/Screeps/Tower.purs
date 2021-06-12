@@ -2,20 +2,21 @@
 module Screeps.Tower where
 
 import Screeps.Structure
-import Effect (Effect)
-import Data.Argonaut.Encode (class EncodeJson)
+
 import Data.Argonaut.Decode (class DecodeJson)
+import Data.Argonaut.Encode (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
+import Effect (Effect)
+import Screeps.Creep (Creep)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (runThisEffectFn1, runThisEffectFn2, instanceOf)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
-import Screeps.Refillable (class Refillable)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Stores (class Stores)
 import Screeps.Types (class Owned)
-import Screeps.Creep (Creep)
 
 foreign import data Tower :: Type
 
@@ -34,7 +35,7 @@ instance decodeTower :: DecodeJson Tower where
 
 instance structuralTower :: Structural Tower
 
-instance refillableTower :: Refillable Tower
+instance storesTower :: Stores Tower
 
 instance structureTower :: Structure Tower where
   _structureType _ = structure_tower

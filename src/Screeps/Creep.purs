@@ -25,7 +25,7 @@ import Screeps.Resource (Resource, ResourceType, resource_energy)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject, pos)
 import Screeps.Source (Source)
-import Screeps.Stores (class Stores, Store)
+import Screeps.Stores (class Stores)
 import Screeps.Structure (class Structure)
 import Screeps.Types (class Owned, TargetPosition(..))
 
@@ -93,16 +93,7 @@ moveOpts =
 body :: Creep -> Array BodyPart
 body creep = unsafeField "body" creep
 
-carry :: Creep -> Store
-carry = unsafeField "carry"
-
-amtCarrying :: Creep -> ResourceType -> Int
-amtCarrying creep res = unsafeField (show res) $ carry creep
-
 foreign import totalAmtCarrying :: Creep -> Int
-
-carryCapacity :: Creep -> Int
-carryCapacity = unsafeField "carryCapacity"
 
 fatigue :: Creep -> Int
 fatigue = unsafeField "fatigue"
