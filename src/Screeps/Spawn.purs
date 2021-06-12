@@ -78,19 +78,21 @@ type SpawnCreepOpts mem
 
 foreign import spawnCreep ::
   Spawn ->
+  Array BodyPartType ->
   String ->
   Effect ReturnCode
 
 foreign import spawnCreepOptsImpl ::
   forall mem.
   Spawn ->
+  Array BodyPartType ->
   String ->
   SpawnCreepOpts mem ->
   Effect ReturnCode
 
-spawnCreepOpts :: forall mem. EncodeJson mem => Spawn -> String -> SpawnCreepOpts mem -> Effect ReturnCode
-spawnCreepOpts spawn n x@{ memory: m } =
-  spawnCreepOptsImpl spawn n x { memory = encodeJson m }
+spawnCreepOpts :: forall mem. EncodeJson mem => Spawn -> Array BodyPartType -> String -> SpawnCreepOpts mem -> Effect ReturnCode
+spawnCreepOpts spawn b n x@{ memory: m } =
+  spawnCreepOptsImpl spawn b n x { memory = encodeJson m }
 
 recycleCreep :: Spawn -> Creep -> Effect ReturnCode
 recycleCreep = runThisEffectFn1 "recycleCreep"
