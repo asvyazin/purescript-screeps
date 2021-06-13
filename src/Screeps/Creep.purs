@@ -20,12 +20,11 @@ import Screeps.Mineral (Mineral)
 import Screeps.Names (CreepName, asCreepName)
 import Screeps.Owned (owner)
 import Screeps.Path (Path, PathOptions)
-import Screeps.Refillable (class Refillable)
-import Screeps.Resource (Resource, ResourceType, resource_energy)
+import Screeps.Resource (Resource, ResourceType)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject, pos)
 import Screeps.Source (Source)
-import Screeps.Stores (class Stores, Store)
+import Screeps.Stores (class Stores)
 import Screeps.Structure (class Structure)
 import Screeps.Types (class Owned, TargetPosition(..))
 
@@ -93,16 +92,7 @@ moveOpts =
 body :: Creep -> Array BodyPart
 body creep = unsafeField "body" creep
 
-carry :: Creep -> Store
-carry = unsafeField "carry"
-
-amtCarrying :: Creep -> ResourceType -> Int
-amtCarrying creep res = unsafeField (show res) $ carry creep
-
 foreign import totalAmtCarrying :: Creep -> Int
-
-carryCapacity :: Creep -> Int
-carryCapacity = unsafeField "carryCapacity"
 
 fatigue :: Creep -> Int
 fatigue = unsafeField "fatigue"
@@ -232,16 +222,6 @@ transferToStructure = runThisEffectFn2 "transfer"
 
 transferAmtToStructure :: forall a. Structure a => Creep -> a -> ResourceType -> Int -> Effect ReturnCode
 transferAmtToStructure = runThisEffectFn3 "transfer"
-
--- | Refill a structure that is refillable.
-refill ::
-  forall a.
-  Refillable a =>
-  Structure a =>
-  Creep ->
-  a ->
-  Effect ReturnCode
-refill creep structure = transferToStructure creep structure resource_energy
 
 upgradeController :: Creep -> Controller -> Effect ReturnCode
 upgradeController = runThisEffectFn1 "upgradeController"

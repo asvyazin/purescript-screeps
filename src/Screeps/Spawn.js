@@ -1,39 +1,23 @@
 "use strict";
 
-exports.createCreepImpl = function (structure) {
-    return function (parts) {
-        return function (left) {
-            return function (right) {
-                return function () {
-                    var result = structure.createCreep(parts);
-                    if (typeof result === "string") {
-                        return right(result);
-                    } else {
-                        return left(result);
-                    }
-                }
-            }
-        }
-    }
-}
-
-exports.createCreepPrimeImpl = function (structure) {
+exports.spawnCreep = function (structure) {
     return function (parts) {
         return function (name) {
-            return function (memory) {
-                return function (left) {
-                    return function (right) {
-                        return function () {
-                            var result = structure.createCreep(parts, name, memory);
-                            if (typeof result === "string") {
-                                return right(result);
-                            } else {
-                                return left(result);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+            return function () {
+                return structure.spawnCreep(parts, name);
+            };
+        };
+    };
+};
+
+exports.spawnCreepOptsImpl = function (structure) {
+    return function (parts) {
+        return function (name) {
+            return function (opts) {
+                return function () {
+                    return structure.spawnCreep(parts, name, opts);
+                };
+            };
+        };
+    };
+};

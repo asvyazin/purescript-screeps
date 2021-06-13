@@ -2,18 +2,19 @@
 module Screeps.PowerSpawn where
 
 import Screeps.Structure
-import Effect (Effect)
-import Data.Argonaut.Encode.Class (class EncodeJson)
+
 import Data.Argonaut.Decode.Class (class DecodeJson)
+import Data.Argonaut.Encode.Class (class EncodeJson)
 import Data.Eq (class Eq)
-import Data.Show (class Show)
 import Data.Maybe (Maybe)
+import Data.Show (class Show)
+import Effect (Effect)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (runThisEffectFn0, runThisEffectFn1, unsafeField, instanceOf)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
-import Screeps.Refillable (class Refillable)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Stores (class Stores)
 import Screeps.Types (class Owned)
 
 foreign import data PowerSpawn :: Type
@@ -33,7 +34,7 @@ instance encodePowerSpawn :: EncodeJson PowerSpawn where
 instance decodePowerSpawn :: DecodeJson PowerSpawn where
   decodeJson = decodeJsonWithId
 
-instance refillablePowerSpawn :: Refillable PowerSpawn
+instance storesPowerSpawn :: Stores PowerSpawn
 
 instance destructiblePowerSpawn :: Destructible PowerSpawn
 
@@ -45,12 +46,6 @@ instance eqPowerSpawn :: Eq PowerSpawn where
 
 instance showPowerSpawn :: Show PowerSpawn where
   show = showStructure
-
-power :: PowerSpawn -> Int
-power = unsafeField "power"
-
-powerCapacity :: PowerSpawn -> Int
-powerCapacity = unsafeField "powerCapacity"
 
 createPowerCreep :: PowerSpawn -> String -> Effect ReturnCode
 createPowerCreep spawn name = runThisEffectFn1 "createPowerCreep" spawn name

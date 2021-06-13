@@ -12,12 +12,12 @@ import Screeps.Constants (lab_cooldown)
 import Screeps.Coolsdown (class Coolsdown)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (runThisEffectFn1, runThisEffectFn2, unsafeField, instanceOf)
-import Screeps.Refillable (class Refillable)
 import Screeps.Types (class Owned)
 import Screeps.Creep (Creep)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
+import Screeps.Stores (class Stores)
 
 foreign import data Lab :: Type
 
@@ -26,8 +26,6 @@ instance objectLab :: RoomObject Lab
 instance ownedLab :: Owned Lab
 
 instance structuralLab :: Structural Lab
-
-instance refillableLab :: Refillable Lab
 
 instance labHasId :: HasId Lab where
   validate = instanceOf "StructureLab"
@@ -52,14 +50,10 @@ instance showLab :: Show Lab where
 
 instance destructibleLab :: Destructible Lab
 
-mineralAmount :: Lab -> Int
-mineralAmount = unsafeField "mineralAmount"
+instance storesLab :: Stores Lab
 
 mineralType :: Lab -> String
 mineralType = unsafeField "mineralType"
-
-mineralCapacity :: Lab -> Int
-mineralCapacity = unsafeField "mineralCapacity"
 
 boostCreep :: Lab -> Creep -> Effect ReturnCode
 boostCreep = runThisEffectFn1 "boostCreep"

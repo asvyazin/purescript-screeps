@@ -3,20 +3,20 @@ module Screeps.Spawn where
 
 import Data.Argonaut.Decode.Class (class DecodeJson)
 import Data.Argonaut.Encode.Class (class EncodeJson, encodeJson)
-import Data.Either (Either(Left, Right))
 import Data.Maybe (Maybe)
 import Effect (Effect)
 import Prelude (class Eq, class Show, ($))
 import Screeps.BodyPartType (BodyPartType)
+import Screeps.Creep (Creep)
 import Screeps.Destructible (class Destructible)
-import Screeps.FFI (NullOrUndefined, runThisEffectFn1, runThisEffectFn2, runThisFn1, toMaybe, toNullable, unsafeField, instanceOf)
+import Screeps.Direction (Direction)
+import Screeps.FFI (runThisEffectFn1, runThisEffectFn2, runThisFn1, toMaybe, unsafeField, instanceOf)
 import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId, eqById)
-import Screeps.Refillable (class Refillable)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Stores (class Stores)
 import Screeps.Structure (class Structural, class Structure, AnyStructure, fromAnyStructure, showStructure, structure_spawn)
 import Screeps.Types (class Owned)
-import Screeps.Creep (Creep)
 
 type CreepInfo
   = { name :: String
@@ -44,7 +44,7 @@ instance decodeSpawn :: DecodeJson Spawn where
 
 instance structuralSpawn :: Structural Spawn
 
-instance refillableSpawn :: Refillable Spawn
+instance storesSpawn :: Stores Spawn
 
 instance structureSpawn :: Structure Spawn where
   _structureType _ = structure_spawn
@@ -69,28 +69,30 @@ canCreateCreep spawn parts = runThisFn1 "canCreateCreep" spawn parts
 canCreateCreep' :: Spawn -> Array BodyPartType -> String -> Effect ReturnCode
 canCreateCreep' spawn parts name' = runThisEffectFn2 "canCreateCreep" spawn parts name'
 
-foreign import createCreepImpl ::
+type SpawnCreepOpts mem
+  = { memory :: mem
+    , energyStructures :: Array AnyStructure
+    , dryRun :: Boolean
+    , directions :: Array Direction
+    }
+
+foreign import spawnCreep ::
   Spawn ->
   Array BodyPartType ->
-  (ReturnCode -> Either ReturnCode String) ->
-  (String -> Either ReturnCode String) ->
-  Effect (Either ReturnCode String)
+  String ->
+  Effect ReturnCode
 
-foreign import createCreepPrimeImpl ::
+foreign import spawnCreepOptsImpl ::
   forall mem.
   Spawn ->
   Array BodyPartType ->
-  NullOrUndefined String ->
-  mem ->
-  (ReturnCode -> Either ReturnCode String) ->
-  (String -> Either ReturnCode String) ->
-  Effect (Either ReturnCode String)
+  String ->
+  SpawnCreepOpts mem ->
+  Effect ReturnCode
 
-createCreep :: Spawn -> Array BodyPartType -> Effect (Either ReturnCode String)
-createCreep spawn parts = createCreepImpl spawn parts Left Right
-
-createCreep' :: forall mem. (EncodeJson mem) => Spawn -> Array BodyPartType -> Maybe String -> mem -> Effect (Either ReturnCode String)
-createCreep' spawn parts name' mem = createCreepPrimeImpl spawn parts (toNullable name') (encodeJson mem) Left Right
+spawnCreepOpts :: forall mem. EncodeJson mem => Spawn -> Array BodyPartType -> String -> SpawnCreepOpts mem -> Effect ReturnCode
+spawnCreepOpts spawn b n x@{ memory: m } =
+  spawnCreepOptsImpl spawn b n x { memory = encodeJson m }
 
 recycleCreep :: Spawn -> Creep -> Effect ReturnCode
 recycleCreep = runThisEffectFn1 "recycleCreep"

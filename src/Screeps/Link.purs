@@ -14,9 +14,9 @@ import Screeps.Decays (class Decays)
 import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId)
 import Screeps.FFI (runThisEffectFn1, runThisEffectFn2, instanceOf)
 import Screeps.Types (class Owned)
-import Screeps.Refillable (class Refillable)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Stores (class Stores)
 
 foreign import data Link :: Type
 
@@ -34,7 +34,7 @@ instance linkCoolsdown :: Coolsdown Link where
 instance linkHasId :: HasId Link where
   validate = instanceOf "StructureLink"
 
-instance refillableLink :: Refillable Link
+instance storesLink :: Stores Link
 
 instance structureLink :: Structure Link where
   _structureType _ = structure_link
