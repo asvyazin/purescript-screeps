@@ -1,20 +1,22 @@
 -- | All FindType constants
 module Screeps.FindType where
 
+import Screeps.Structure
+
 import Data.Eq ((==))
 import Data.Monoid ((<>))
 import Data.Show (class Show, show)
-import Screeps.RoomPosition.Type (RoomPosition)
 import Screeps.ConstructionSite (ConstructionSite)
+import Screeps.Creep (Creep)
 import Screeps.Flag (Flag)
 import Screeps.Mineral (Mineral)
 import Screeps.Nuke (Nuke)
 import Screeps.Resource (Resource)
+import Screeps.RoomPosition.Type (RoomPosition)
 import Screeps.Source (Source)
 import Screeps.Spawn (Spawn)
-import Screeps.Structure
+import Screeps.Tombstone (Tombstone)
 import Screeps.Types (Terrain)
-import Screeps.Creep (Creep)
 
 newtype FindType a
   = FindType Int
@@ -65,6 +67,8 @@ foreign import find_minerals :: FindType Mineral
 
 foreign import find_nukes :: FindType Nuke
 
+foreign import find_tombstones :: FindType Tombstone
+
 instance showFindType :: Show (FindType a) where
   show f
     | f === find_exit_top = "find_exit_top"
@@ -112,6 +116,8 @@ instance showFindType :: Show (FindType a) where
     | f === find_minerals = "find_minerals"
   show f
     | f === find_nukes = "find_nukes"
+  show f
+    | f === find_tombstones = "find_tombstones"
   show (FindType f) = "FindType " <> show f
 
 findTypeEq ::
@@ -146,6 +152,8 @@ foreign import look_nukes :: LookType Nuke
 
 foreign import look_terrain :: LookType Terrain
 
+foreign import look_tombstones :: LookType Tombstone
+
 instance showLookType :: Show (LookType a) where
   show f
     | f =-= look_creeps = "look_creeps"
@@ -167,6 +175,8 @@ instance showLookType :: Show (LookType a) where
     | f =-= look_nukes = "look_nukes"
   show f
     | f =-= look_terrain = "look_terrain"
+  show f
+    | f =-= look_tombstones = "look_tombstones"
   show f = "LookType " <> show f
 
 lookEq :: forall a b. LookType a -> LookType b -> Boolean

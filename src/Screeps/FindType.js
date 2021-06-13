@@ -23,6 +23,7 @@ exports.find_my_construction_sites = FIND_MY_CONSTRUCTION_SITES;
 exports.find_hostile_construction_sites = FIND_HOSTILE_CONSTRUCTION_SITES;
 exports.find_minerals = FIND_MINERALS;
 exports.find_nukes = FIND_NUKES;
+exports.find_tombstones = FIND_TOMBSTONES;
 
 exports.look_creeps = LOOK_CREEPS;
 exports.look_energy = LOOK_ENERGY;
@@ -34,4 +35,4 @@ exports.look_flags = LOOK_FLAGS;
 exports.look_construction_sites = LOOK_CONSTRUCTION_SITES;
 exports.look_nukes = LOOK_NUKES;
 exports.look_terrain = LOOK_TERRAIN;
-
+exports.look_tombstones = LOOK_TOMBSTONES;
