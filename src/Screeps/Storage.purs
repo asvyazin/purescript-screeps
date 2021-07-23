@@ -2,8 +2,9 @@
 module Screeps.Storage where
 
 import Screeps.Structure
-import Data.Argonaut.Encode (class EncodeJson)
+
 import Data.Argonaut.Decode (class DecodeJson)
+import Data.Argonaut.Encode (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
@@ -13,6 +14,7 @@ import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId, eqById)
 import Screeps.RoomObject (class RoomObject)
 import Screeps.Stores (class Stores)
 import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Storage :: Type
 
@@ -38,6 +40,8 @@ instance showStorage :: Show Storage where
 
 instance eqStorage :: Eq Storage where
   eq = eqById
+
+instance withdrawableStorage :: Withdrawable Storage
 
 instance structureStorage :: Structure Storage where
   _structureType _ = structure_storage

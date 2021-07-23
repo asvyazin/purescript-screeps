@@ -2,21 +2,23 @@
 module Screeps.Link where
 
 import Screeps.Structure
-import Data.Argonaut.Encode (class EncodeJson)
+
 import Data.Argonaut.Decode (class DecodeJson)
-import Effect (Effect)
+import Data.Argonaut.Encode (class EncodeJson)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
+import Effect (Effect)
 import Screeps.Constants (link_cooldown)
 import Screeps.Coolsdown (class Coolsdown)
-import Screeps.Destructible (class Destructible)
 import Screeps.Decays (class Decays)
-import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId)
+import Screeps.Destructible (class Destructible)
 import Screeps.FFI (runThisEffectFn1, runThisEffectFn2, instanceOf)
-import Screeps.Types (class Owned)
+import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
 import Screeps.Stores (class Stores)
+import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Link :: Type
 
@@ -35,6 +37,8 @@ instance linkHasId :: HasId Link where
   validate = instanceOf "StructureLink"
 
 instance storesLink :: Stores Link
+
+instance withdrawableLink :: Withdrawable Link
 
 instance structureLink :: Structure Link where
   _structureType _ = structure_link

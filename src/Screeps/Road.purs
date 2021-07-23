@@ -2,16 +2,18 @@
 module Screeps.Road where
 
 import Screeps.Structure
-import Data.Argonaut.Encode.Class (class EncodeJson)
+
 import Data.Argonaut.Decode.Class (class DecodeJson)
+import Data.Argonaut.Encode.Class (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
-import Screeps.FFI (instanceOf)
 import Screeps.Decays (class Decays)
 import Screeps.Destructible (class Destructible)
+import Screeps.FFI (instanceOf)
 import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId, eqById)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Road :: Type
 
@@ -26,6 +28,8 @@ instance eqRoad :: Eq Road where
   eq = eqById
 
 instance roadDecays :: Decays Road
+
+instance withdrawableRoad :: Withdrawable Road
 
 instance structureRoad :: Structure Road where
   _structureType _ = structure_road

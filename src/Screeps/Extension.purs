@@ -14,6 +14,7 @@ import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId, eqById)
 import Screeps.RoomObject (class RoomObject)
 import Screeps.Stores (class Stores)
 import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Extension :: Type
 
@@ -39,6 +40,8 @@ instance eqExtension :: Eq Extension where
 
 instance showExtension :: Show Extension where
   show = showStructure
+
+instance withdrawableExtension :: Withdrawable Extension
 
 instance structureExtension :: Structure Extension where
   _structureType _ = structure_extension

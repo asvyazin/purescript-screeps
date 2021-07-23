@@ -19,6 +19,7 @@ import Screeps.RoomObject (class RoomObject)
 import Screeps.RoomPosition.Type (RoomPosition)
 import Screeps.Stores (class Stores)
 import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Nuker :: Type
 
@@ -41,6 +42,8 @@ instance storesNuker :: Stores Nuker
 
 instance coolsdownNuker :: Coolsdown Nuker where
   expectedCooldown _ = nuker_cooldown
+
+instance withdrawableNuker :: Withdrawable Nuker
 
 instance structureNuker :: Structure Nuker where
   _structureType _ = structure_nuker

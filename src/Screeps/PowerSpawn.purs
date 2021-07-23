@@ -16,6 +16,7 @@ import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
 import Screeps.Stores (class Stores)
 import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data PowerSpawn :: Type
 
@@ -37,6 +38,8 @@ instance decodePowerSpawn :: DecodeJson PowerSpawn where
 instance storesPowerSpawn :: Stores PowerSpawn
 
 instance destructiblePowerSpawn :: Destructible PowerSpawn
+
+instance withdrawablePowerSpawn :: Withdrawable PowerSpawn
 
 instance structurePowerSpawn :: Structure PowerSpawn where
   _structureType _ = structure_power_spawn

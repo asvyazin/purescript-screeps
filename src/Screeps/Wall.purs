@@ -2,8 +2,9 @@
 module Screeps.Wall where
 
 import Screeps.Structure
-import Data.Argonaut.Encode (class EncodeJson)
+
 import Data.Argonaut.Decode (class DecodeJson)
+import Data.Argonaut.Encode (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
@@ -11,6 +12,7 @@ import Screeps.Destructible (class Destructible)
 import Screeps.FFI (unsafeField, instanceOf)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Wall :: Type
 
@@ -27,6 +29,8 @@ instance decodeWall :: DecodeJson Wall where
   decodeJson = decodeJsonWithId
 
 instance structuralWall :: Structural Wall
+
+instance withdrawableWall :: Withdrawable Wall
 
 instance structureWall :: Structure Wall where
   _structureType _ = structure_wall

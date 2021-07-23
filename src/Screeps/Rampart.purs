@@ -2,19 +2,21 @@
 module Screeps.Rampart where
 
 import Screeps.Structure
-import Data.Argonaut.Encode (class EncodeJson)
+
 import Data.Argonaut.Decode (class DecodeJson)
-import Effect (Effect)
+import Data.Argonaut.Encode (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
+import Effect (Effect)
 import Screeps.Decays (class Decays)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (unsafeField, instanceOf)
 import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId, eqById)
-import Screeps.Types (class Owned)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Rampart :: Type
 
@@ -34,6 +36,8 @@ instance decodeRampart :: DecodeJson Rampart where
 instance structuralRampart :: Structural Rampart
 
 instance decaysRampart :: Decays Rampart
+
+instance withdrawableRampart :: Withdrawable Rampart
 
 instance structureRampart :: Structure Rampart where
   _structureType _ = structure_rampart

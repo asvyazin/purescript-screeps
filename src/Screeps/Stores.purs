@@ -15,8 +15,10 @@ import Screeps.Resource (ResourceType(ResourceType))
 import Screeps.RoomObject (class RoomObject)
 import Screeps.Structure (class Structure, class Structural, showStructure, StructureType(..))
 import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 import Unsafe.Coerce (unsafeCoerce)
 
+class Stores :: forall k. k -> Constraint
 class Stores a
 
 foreign import data AnyStore :: Type
@@ -41,6 +43,8 @@ instance eqAnyStore :: Eq AnyStore where
   eq = eqById
 
 instance anyStoreIsStructural :: Structural AnyStore
+
+instance anyStoreIsWithdrawable :: Withdrawable AnyStore
 
 instance anyStoreIsStructure :: Structure AnyStore where
   _structureType _ = StructureType "<unknown>"

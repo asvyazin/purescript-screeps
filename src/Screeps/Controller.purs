@@ -2,19 +2,21 @@
 module Screeps.Controller where
 
 import Screeps.Structure
-import Effect (Effect)
-import Data.Argonaut.Encode.Class (class EncodeJson)
+
 import Data.Argonaut.Decode.Class (class DecodeJson)
+import Data.Argonaut.Encode.Class (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
+import Effect (Effect)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (runThisEffectFn0, unsafeField, unsafeOptField, instanceOf)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
 import Screeps.Progress (class Progress)
+import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
 import Screeps.Types (class Owned)
-import Screeps.ReturnCode (ReturnCode)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Controller :: Type
 
@@ -40,6 +42,8 @@ instance showController :: Show Controller where
   show = showStructure
 
 instance progressController :: Progress Controller
+
+instance withdrawableController :: Withdrawable Controller
 
 instance structureController :: Structure Controller where
   _structureType _ = structure_controller

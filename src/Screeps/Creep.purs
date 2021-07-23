@@ -27,6 +27,7 @@ import Screeps.Source (Source)
 import Screeps.Stores (class Stores)
 import Screeps.Structure (class Structure)
 import Screeps.Types (class Owned, TargetPosition(..))
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Creep :: Type
 
@@ -226,8 +227,8 @@ transferAmtToStructure = runThisEffectFn3 "transfer"
 upgradeController :: Creep -> Controller -> Effect ReturnCode
 upgradeController = runThisEffectFn1 "upgradeController"
 
-withdraw :: forall a. Structure a => Creep -> a -> ResourceType -> Effect ReturnCode
+withdraw :: forall a. Withdrawable a => Creep -> a -> ResourceType -> Effect ReturnCode
 withdraw = runThisEffectFn2 "withdraw"
 
-withdrawAmt :: forall a. Structure a => Creep -> a -> ResourceType -> Int -> Effect ReturnCode
+withdrawAmt :: forall a. Withdrawable a => Creep -> a -> ResourceType -> Int -> Effect ReturnCode
 withdrawAmt = runThisEffectFn3 "withdraw"

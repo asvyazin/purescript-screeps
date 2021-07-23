@@ -2,20 +2,22 @@
 module Screeps.Terminal where
 
 import Screeps.Structure
-import Effect (Effect)
-import Data.Argonaut.Encode (class EncodeJson)
+
 import Data.Argonaut.Decode (class DecodeJson)
+import Data.Argonaut.Encode (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
+import Effect (Effect)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (runThisEffectFn3, runThisEffectFn4, instanceOf)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
-import Screeps.Stores (class Stores)
-import Screeps.Types (class Owned)
 import Screeps.Resource (ResourceType)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Stores (class Stores)
+import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Terminal :: Type
 
@@ -38,6 +40,8 @@ instance decodeTerminal :: DecodeJson Terminal where
 instance structuralTerminal :: Structural Terminal
 
 instance terminalStores :: Stores Terminal
+
+instance withdrawableTerminal :: Withdrawable Terminal
 
 instance structureTerminal :: Structure Terminal where
   _structureType _ = structure_terminal

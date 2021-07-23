@@ -11,6 +11,7 @@ import Screeps.Id (class HasId, decodeJsonWithId, encodeJsonWithId, eqById)
 import Screeps.Id as Id
 import Screeps.RoomObject (class RoomObject, pos)
 import Screeps.Stores (class Stores)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Tombstone :: Type
 
@@ -32,6 +33,8 @@ instance showTombstone :: Show Tombstone where
   show t = "Tombstone " <> show (Id.id t) <> "@" <> show (pos t)
 
 instance storesTombstone :: Stores Tombstone
+
+instance withdrawableTombstone :: Withdrawable Tombstone
 
 -- todo add PowerCreep
 creep :: Tombstone -> Creep

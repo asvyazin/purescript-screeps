@@ -17,6 +17,7 @@ import Screeps.RoomObject (class RoomObject)
 import Screeps.Stores (class Stores)
 import Screeps.Structure (class Structural, class Structure, AnyStructure, fromAnyStructure, showStructure, structure_spawn)
 import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 type CreepInfo
   = { name :: String
@@ -45,6 +46,8 @@ instance decodeSpawn :: DecodeJson Spawn where
 instance structuralSpawn :: Structural Spawn
 
 instance storesSpawn :: Stores Spawn
+
+instance withdrawableSpawn :: Withdrawable Spawn
 
 instance structureSpawn :: Structure Spawn where
   _structureType _ = structure_spawn

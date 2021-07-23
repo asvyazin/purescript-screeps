@@ -2,8 +2,9 @@
 module Screeps.KeeperLair where
 
 import Screeps.Structure
-import Data.Argonaut.Encode (class EncodeJson)
+
 import Data.Argonaut.Decode (class DecodeJson)
+import Data.Argonaut.Encode (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
@@ -12,6 +13,7 @@ import Screeps.FFI (unsafeField, instanceOf)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
 import Screeps.RoomObject (class RoomObject)
 import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data KeeperLair :: Type
 
@@ -26,6 +28,8 @@ instance eqKeeperLair :: Eq KeeperLair where
 instance ownedKeeperLair :: Owned KeeperLair -- TODO: check itEffectect
 
 instance structuralKeeperLair :: Structural KeeperLair
+
+instance withdrawableKeeperLair :: Withdrawable KeeperLair
 
 instance structureKeeperLair :: Structure KeeperLair where
   _structureType _ = structure_keeper_lair

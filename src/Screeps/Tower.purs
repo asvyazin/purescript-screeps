@@ -17,6 +17,7 @@ import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
 import Screeps.Stores (class Stores)
 import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Tower :: Type
 
@@ -36,6 +37,8 @@ instance decodeTower :: DecodeJson Tower where
 instance structuralTower :: Structural Tower
 
 instance storesTower :: Stores Tower
+
+instance withdrawableTower :: Withdrawable Tower
 
 instance structureTower :: Structure Tower where
   _structureType _ = structure_tower

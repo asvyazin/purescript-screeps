@@ -2,8 +2,9 @@
 module Screeps.PowerBank where
 
 import Screeps.Structure
-import Data.Argonaut.Encode.Class (class EncodeJson)
+
 import Data.Argonaut.Decode.Class (class DecodeJson)
+import Data.Argonaut.Encode.Class (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
@@ -11,8 +12,9 @@ import Screeps.Decays (class Decays)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (unsafeField, instanceOf)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
-import Screeps.Types (class Owned)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data PowerBank :: Type
 
@@ -30,6 +32,8 @@ instance encodePowerBank :: EncodeJson PowerBank where
 
 instance decodePowerBank :: DecodeJson PowerBank where
   decodeJson = decodeJsonWithId
+
+instance withdrawablePowerBank :: Withdrawable PowerBank
 
 instance structurePowerBank :: Structure PowerBank where
   _structureType _ = structure_power_bank

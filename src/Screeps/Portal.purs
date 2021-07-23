@@ -2,8 +2,9 @@
 module Screeps.Portal where
 
 import Screeps.Structure
-import Data.Argonaut.Encode (class EncodeJson)
+
 import Data.Argonaut.Decode (class DecodeJson)
+import Data.Argonaut.Encode (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
@@ -14,6 +15,7 @@ import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
 import Screeps.RoomObject (class RoomObject)
 import Screeps.RoomPosition.Type (RoomPosition)
 import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Portal :: Type
 
@@ -33,6 +35,8 @@ instance encodePortal :: EncodeJson Portal where
 
 instance decodePortal :: DecodeJson Portal where
   decodeJson = decodeJsonWithId
+
+instance withdrawablePortal :: Withdrawable Portal
 
 instance structurePortal :: Structure Portal where
   _structureType _ = structure_portal

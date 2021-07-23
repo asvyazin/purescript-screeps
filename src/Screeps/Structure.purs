@@ -2,8 +2,7 @@
 module Screeps.Structure where
 
 import Prelude
-import Screeps.RoomObject (class RoomObject, AnyRoomObject, pos)
-import Type.Proxy (Proxy(..))
+
 import Data.Argonaut.Decode.Class (class DecodeJson)
 import Data.Argonaut.Encode.Class (class EncodeJson)
 import Data.Generic.Rep (class Generic)
@@ -13,14 +12,19 @@ import Screeps.Destructible (class Destructible)
 import Screeps.FFI (instanceOf, runThisEffectFn0, unsafeField)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById, validate)
 import Screeps.ReturnCode (ReturnCode)
+import Screeps.RoomObject (class RoomObject, AnyRoomObject, pos)
+import Screeps.Withdrawable (class Withdrawable)
+import Type.Proxy (Proxy(..))
 import Unsafe.Coerce (unsafeCoerce)
 
+class Structural :: forall k. k -> Constraint
 class Structural a -- has `structureType` - Structure or ConstructionSite
 
 class
   ( RoomObject a
   , Structural a
   , HasId a
+  , Withdrawable a
   ) <= Structure a where
   _structureType :: Proxy a -> StructureType
 
@@ -75,6 +79,8 @@ foreign import structure_container :: StructureType
 
 foreign import structure_nuker :: StructureType
 
+foreign import structure_invader_core :: StructureType
+
 showStructure ::
   forall s.
   Structure s =>
@@ -98,6 +104,8 @@ instance eqAnyStructure :: Eq AnyStructure where
 instance anyStructureIsRoomObject :: RoomObject AnyStructure
 
 instance anyStructureIsStructural :: Structural AnyStructure
+
+instance anyStructureIsWithdrawable :: Withdrawable AnyStructure
 
 instance anyStructure :: Structure AnyStructure where
   _structureType _ = StructureType "<unknown>"

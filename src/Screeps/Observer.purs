@@ -2,18 +2,20 @@
 module Screeps.Observer where
 
 import Screeps.Structure
-import Data.Argonaut.Encode (class EncodeJson)
+
 import Data.Argonaut.Decode (class DecodeJson)
-import Effect (Effect)
+import Data.Argonaut.Encode (class EncodeJson)
 import Data.Eq (class Eq)
 import Data.Maybe (Maybe)
 import Data.Show (class Show)
+import Effect (Effect)
 import Screeps.Destructible (class Destructible)
 import Screeps.FFI (runThisEffectFn1, instanceOf)
 import Screeps.Id (class HasId, encodeJsonWithId, decodeJsonWithId, eqById)
-import Screeps.Types (class Owned)
 import Screeps.ReturnCode (ReturnCode)
 import Screeps.RoomObject (class RoomObject)
+import Screeps.Types (class Owned)
+import Screeps.Withdrawable (class Withdrawable)
 
 foreign import data Observer :: Type
 
@@ -31,6 +33,8 @@ instance decodeObserver :: DecodeJson Observer where
   decodeJson = decodeJsonWithId
 
 instance structuralObserver :: Structural Observer
+
+instance withdrawableObserver :: Withdrawable Observer
 
 instance structureObserver :: Structure Observer where
   _structureType _ = structure_observer

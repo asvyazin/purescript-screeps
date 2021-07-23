@@ -17,6 +17,7 @@ exports.structure_lab = STRUCTURE_LAB;
 exports.structure_terminal = STRUCTURE_TERMINAL;
 exports.structure_container = STRUCTURE_CONTAINER;
 exports.structure_nuker = STRUCTURE_NUKER;
+exports.structure_invader_core = STRUCTURE_INVADER_CORE;
 
 exports.numStructures = function (structureType) {
   return function (level) {
